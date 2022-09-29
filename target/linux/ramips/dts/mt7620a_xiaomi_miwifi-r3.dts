@@ -1,5 +1,3 @@
-/dts-v1/;
-
 #include "mt7620a.dtsi"
 
 #include <dt-bindings/gpio/gpio.h>
@@ -11,6 +9,7 @@
 
 	aliases {
 		led-status = &led_status_blue;
+		label-mac-device = &ethernet;
 	};
 
 	chosen {
@@ -139,14 +138,16 @@
 &ethernet {
 	pinctrl-names = "default";
 	pinctrl-0 = <&ephy_pins>;
+
 	mtd-mac-address = <&factory 0x28>;
+
 	nvmem-cells = <&macaddr_factory_28>;
 	nvmem-cell-names = "mac-address";
 	mediatek,portmap = "llllw";
 };
 
 &wmac {
-	ralink,mtd-eeprom = <&factory 0>;
+	ralink,mtd-eeprom = <&factory 0x0>;
 };
 
 &pcie {
@@ -162,17 +163,15 @@
 	};
 };
 
-&pinctrl {
-	state_default: pinctrl0 {
-		gpio {
-			groups = "rgmii1";
-			function = "gpio";
-		};
+&state_default {
+	gpio {
+		group = "rgmii1";
+		function = "gpio";
+	};
 
-		pa {
-			groups = "pa";
-			function = "pa";
-		};
+	pa {
+		groups = "pa";
+		function = "pa";
 	};
 };
 
